@@ -8,8 +8,12 @@ pool:
 
 steps:
 - template: 'templates/restoreandbuild.yml'
-  # parameters:
-  #  buildConfiguration: 'Debug'
+  parameters:
+    buildConfiguration: 'Debug'
+
+- template: 'templates/restoreandbuild.yml'
+  parameters:
+    buildConfiguration: 'Release'
 
 - task: PublishBuildArtifacts@1
   inputs:
