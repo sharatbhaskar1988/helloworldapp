@@ -3,26 +3,13 @@ trigger:
 
 pool:
  name: myagent
- demands: dotnet
+ demands: 
+  - agent.name -equals dotnet
 
 steps:
-- task: DotNetCoreCLI@2
-  inputs:
-    command: 'restore'
-    projects: '**/*.csproj'
-    feedsToUse: 'select'
-
-- task: DotNetCoreCLI@2
-  inputs:
-    command: 'build'
-    projects: '**/*.csproj'
-    arguments: '--configuration $(buildConfiguration)'
-
-- task: DotNetCoreCLI@2
-  inputs:
-    command: 'publish'
-    publishWebProjects: true
-    arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+- template: 'templates/restoreandbuild.yml'
+  # parameters:
+  #  buildConfiguration: 'Debug'
 
 - task: PublishBuildArtifacts@1
   inputs:
