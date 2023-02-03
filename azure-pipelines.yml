@@ -49,7 +49,7 @@ stages:
     - task: AzureRmWebAppDeployment@4
       inputs:
         ConnectionType: 'AzureRM'
-        azureSubscription: 'DSS Training7 service connection'
+        azureSubscription: 'DSS'
         appType: 'webApp'
         WebAppName: 'hwa-dev'
         packageForLinux: '$(Pipeline.Workspace)/**/*.zip'
@@ -67,7 +67,7 @@ stages:
     - task: AzureRmWebAppDeployment@4
       inputs:
         ConnectionType: 'AzureRM'
-        azureSubscription: 'DSS Training7 service connection'
+        azureSubscription: 'DSS'
         appType: 'webApp'
         WebAppName: 'hwa-qa'
         packageForLinux: '$(Pipeline.Workspace)/**/*.zip'
@@ -85,12 +85,20 @@ stages:
     - task: AzureRmWebAppDeployment@4
       inputs:
         ConnectionType: 'AzureRM'
-        azureSubscription: 'DSS Training7 service connection'
+        azureSubscription: 'DSS'
         appType: 'webApp'
         WebAppName: 'hwa-prod'
         deployToSlotOrASE: true
         ResourceGroupName: 'helloworldapp'
         SlotName: 'staging'
         packageForLinux: '$(Pipeline.Workspace)/**/*.zip'
+    
+    - task: AzureAppServiceManage@0
+      inputs:
+        azureSubscription: 'DSS'
+        Action: 'Swap Slots'
+        WebAppName: 'hwa-prod'
+        ResourceGroupName: 'helloworldapp'
+        SourceSlot: 'staging'
 
     
