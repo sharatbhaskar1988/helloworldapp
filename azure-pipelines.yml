@@ -44,11 +44,11 @@ stages:
   jobs:
   - job:
     pool:
-     name: myagent
-     demands:
-     - agent.name -equals dotnet
+      vmImage: ubuntu-latest
 
     steps:
+    - download: current
+      artifact: drop
     - task: AzureRmWebAppDeployment@4
       inputs:
         ConnectionType: 'AzureRM'
@@ -62,11 +62,14 @@ stages:
   jobs:
   - job:
     pool:
-     name: myagent
-     demands:
-     - agent.name -equals dotnet
+    #  name: ubuntu-latest
+    #  demands:
+    #  - agent.name -equals dotnet
+      vmImage: ubuntu-latest
 
     steps:
+    - download: current
+      artifact: drop
     - task: AzureRmWebAppDeployment@4
       inputs:
         ConnectionType: 'AzureRM'
@@ -80,11 +83,14 @@ stages:
   jobs:
   - job:
     pool:
-     name: myagent
-     demands:
-     - agent.name -equals dotnet
+    #  name: ubuntu-latest
+    #  demands:
+    #  - agent.name -equals dotnet
+       vmImage: ubuntu-latest
 
     steps:
+    - download: current
+      artifact: drop
     - task: AzureRmWebAppDeployment@4
       inputs:
         ConnectionType: 'AzureRM'
