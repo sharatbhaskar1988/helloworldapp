@@ -48,5 +48,5 @@ stages:
         azureSubscription: 'DSS'
         appType: 'webApp'
         WebAppName: 'hwa-qa'
-        packageForLinux: '$(Parameters.Workspace)/**/*.zip'
+        packageForLinux: '$(Pipeline.Workspace)/**/*.zip'
     
