@@ -6,9 +6,6 @@ stages:
   jobs:
   - job: "BuildJob"
     pool:
-    #   name: myagent
-    #   demands: 
-    #   - agent.name -equals dotnet
       vmImage: ubuntu-latest
 
     steps:
@@ -62,9 +59,6 @@ stages:
   jobs:
   - job:
     pool:
-    #  name: ubuntu-latest
-    #  demands:
-    #  - agent.name -equals dotnet
       vmImage: ubuntu-latest
 
     steps:
@@ -83,9 +77,6 @@ stages:
   jobs:
   - job:
     pool:
-    #  name: ubuntu-latest
-    #  demands:
-    #  - agent.name -equals dotnet
        vmImage: ubuntu-latest
 
     steps:
