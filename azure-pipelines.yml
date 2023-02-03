@@ -36,69 +36,6 @@ stages:
         artifact: 'drop'
         publishLocation: 'pipeline'
 
-- stage: "DeployToDev"
-  dependsOn: "BuildStage"
-  jobs:
-  - job:
-    pool:
-      vmImage: ubuntu-latest
 
-    steps:
-    - download: current
-      artifact: drop
-    - task: AzureRmWebAppDeployment@4
-      inputs:
-        ConnectionType: 'AzureRM'
-        azureSubscription: 'DSS'
-        appType: 'webApp'
-        WebAppName: 'hwa-dev'
-        packageForLinux: '$(Pipeline.Workspace)/**/*.zip'
-
-- stage: "DeployToQA"
-  dependsOn: "DeployToDev"
-  jobs:
-  - job:
-    pool:
-      vmImage: ubuntu-latest
-
-    steps:
-    - download: current
-      artifact: drop
-    - task: AzureRmWebAppDeployment@4
-      inputs:
-        ConnectionType: 'AzureRM'
-        azureSubscription: 'DSS'
-        appType: 'webApp'
-        WebAppName: 'hwa-qa'
-        packageForLinux: '$(Pipeline.Workspace)/**/*.zip'
-    
-- stage: "DeployToProduction"
-  dependsOn: "DeployToQA"
-  jobs:
-  - job:
-    pool:
-       vmImage: ubuntu-latest
-
-    steps:
-    - download: current
-      artifact: drop
-    - task: AzureRmWebAppDeployment@4
-      inputs:
-        ConnectionType: 'AzureRM'
-        azureSubscription: 'DSS'
-        appType: 'webApp'
-        WebAppName: 'hwa-prod'
-        deployToSlotOrASE: true
-        ResourceGroupName: 'helloworldapp'
-        SlotName: 'staging'
-        packageForLinux: '$(Pipeline.Workspace)/**/*.zip'
-    
-    - task: AzureAppServiceManage@0
-      inputs:
-        azureSubscription: 'DSS'
-        Action: 'Swap Slots'
-        WebAppName: 'hwa-prod'
-        ResourceGroupName: 'helloworldapp'
-        SourceSlot: 'staging'
 
     
