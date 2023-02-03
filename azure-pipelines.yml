@@ -6,9 +6,10 @@ stages:
   jobs:
   - job: "BuildJob"
     pool:
-      name: myagent
-      demands: 
-      - agent.name -equals dotnet
+    #   name: myagent
+    #   demands: 
+    #   - agent.name -equals dotnet
+      vmImage: ubuntu-latest
 
     steps:
     - task: DotNetCoreCLI@2
