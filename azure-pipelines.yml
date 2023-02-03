@@ -36,6 +36,17 @@ stages:
         artifact: 'drop'
         publishLocation: 'pipeline'
 
-
-
+- stage: "DeployToDev"
+  jobs:
+  - job:
+    pool:
+      vmImage: ubuntu-latest
+    steps:
+    - task: AzureRmWebAppDeployment@4
+      inputs:
+        ConnectionType: 'AzureRM'
+        azureSubscription: 'DSS'
+        appType: 'webApp'
+        WebAppName: 'hwa-qa'
+        packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
     
