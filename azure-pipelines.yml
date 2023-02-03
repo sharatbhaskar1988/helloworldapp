@@ -55,7 +55,7 @@ stages:
         azureSubscription: 'DSS Training7 service connection'
         appType: 'webApp'
         WebAppName: 'hwa-dev'
-        packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
+        packageForLinux: '$(Pipeline.Workspace)/**/*.zip'
 
 - stage: "DeployToQA"
   dependsOn: "DeployToDev"
@@ -76,7 +76,7 @@ stages:
         azureSubscription: 'DSS Training7 service connection'
         appType: 'webApp'
         WebAppName: 'hwa-qa'
-        packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
+        packageForLinux: '$(Pipeline.Workspace)/**/*.zip'
     
 - stage: "DeployToProduction"
   dependsOn: "DeployToQA"
@@ -100,6 +100,6 @@ stages:
         deployToSlotOrASE: true
         ResourceGroupName: 'helloworldapp'
         SlotName: 'staging'
-        packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
+        packageForLinux: '$(Pipeline.Workspace)/**/*.zip'
 
     
