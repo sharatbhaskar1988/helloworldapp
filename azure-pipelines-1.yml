@@ -94,4 +94,10 @@ stages:
             ResourceGroupName: 'helloworldapp'
             SlotName: 'staging'
             packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
-        
+        - task: AzureAppServiceManage@0
+          inputs:
+            azureSubscription: 'DSS'
+            Action: 'Swap Slots'
+            WebAppName: 'hwa-prod'
+            ResourceGroupName: 'helloworldapp'
+            SourceSlot: 'staging'
