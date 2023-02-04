@@ -1,6 +1,6 @@
 trigger:
 - master
-- Development
+- development
 
 pool:
  vmImage: ubuntu-latest
@@ -36,7 +36,7 @@ stages:
 
 - stage: "DeploytoDev"
   dependsOn: "BuildStage"
-  condition: eq(variables['Build.SourceBranch'], 'refs/heads/Development')
+  condition: eq(variables['Build.SourceBranch'], 'refs/heads/development')
   jobs:
   - deployment:
     pool:
