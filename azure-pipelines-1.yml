@@ -64,7 +64,13 @@ stages:
       runOnce:
         deploy:         
           steps:
-          
+          - task: AzureRmWebAppDeployment@4
+            inputs:
+              ConnectionType: 'AzureRM'
+              azureSubscription: 'DSS'
+              appType: 'webApp'
+              WebAppName: 'hwa-qa'
+              packageForLinux: '$(Pipeline.Workspace)/**/*.zip'
 
 - stage: "DeploytoProd"
   dependsOn: "BuildStage"
@@ -87,11 +93,5 @@ stages:
             deployToSlotOrASE: true
             ResourceGroupName: 'helloworldapp'
             SlotName: 'staging'
-            packageForLinux: '$(Pipeline.Workspace)/**/*.zip'
-        - task: AzureAppServiceManage@0
-          inputs:
-            azureSubscription: 'DSS'
-            Action: 'Swap Slots'
-            WebAppName: 'hwa-prod'
-            ResourceGroupName: 'helloworldapp'
-            SourceSlot: 'staging'
+            packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
+        
