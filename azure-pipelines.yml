@@ -1,5 +1,6 @@
 trigger:
 - master
+- development
 
 pool:
  vmImage: ubuntu-latest
@@ -34,6 +35,8 @@ stages:
           publishLocation: 'pipeline'
 
 - stage: "DeploytoDev"
+  dependsOn: "BuildStage"
+  condition: eq(variables['Build.SourceBranch'], 'refs/heads/development')
   jobs:
   - deployment:
     pool:
@@ -70,6 +73,8 @@ stages:
               packageForLinux: '$(Pipeline.Workspace)/**/*.zip'
 
 - stage: "DeploytoProd"
+  dependsOn: "BuildStage"
+  condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
   jobs:
   - deployment:
     pool:
