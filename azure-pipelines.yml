@@ -1,39 +1,39 @@
 trigger:
 - master
 
+pool:
+ vmImage: ubuntu-latest
+
 stages:
 - stage: "BuildStage"
   jobs:
   - job: "BuildJob"
-    pool:
-      vmImage: ubuntu-latest
-
     steps:
     - task: DotNetCoreCLI@2
-      displayName: Restore
+      displayName: "Dotnet Restore"
       inputs:
         command: 'restore'
         projects: '**/*.csproj'
         feedsToUse: 'select'
     - task: DotNetCoreCLI@2
-      displayName: Build
+      displayName: "Dotnet Build"
       inputs:
         command: 'build'
         projects: '**/*.csproj'
         arguments: '--configuration $(buildConfiguration)'
     - task: DotNetCoreCLI@2
-      displayName: Publish
+      displayName: "Dotnet publish"
       inputs:
         command: 'publish'
         publishWebProjects: true
-        arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)'      
+        arguments: '--output $(build.ArtifactStagingDirectory) --configuration $(buildConfiguration)'  
     - task: PublishPipelineArtifact@1
       inputs:
-        targetPath: '$(Build.ArtifactStagingDirectory)'
-        artifact: 'drop'
-        publishLocation: 'pipeline'
+          targetPath: '$(Pipeline.Workspace)'
+          artifact: 'drop'
+          publishLocation: 'pipeline'
 
-- stage: "DeployToDev"
+- stage: "DeploytoDev"
   jobs:
   - job:
     pool:
@@ -47,9 +47,9 @@ stages:
         azureSubscription: 'DSS'
         appType: 'webApp'
         WebAppName: 'hwa-dev'
-        packageForLinux: '$(Pipeline.Workspace)/**/*.zip'
+        packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
 
-- stage: "DeployToQA"
+- stage: "DeploytoQA"
   jobs:
   - job:
     pool:
@@ -63,9 +63,9 @@ stages:
         azureSubscription: 'DSS'
         appType: 'webApp'
         WebAppName: 'hwa-qa'
-        packageForLinux: '$(Pipeline.Workspace)/**/*.zip'
+        packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
 
-- stage: "DeployToProd"
+- stage: "DeploytoProd"
   jobs:
   - job:
     pool:
@@ -82,7 +82,7 @@ stages:
         deployToSlotOrASE: true
         ResourceGroupName: 'helloworldapp'
         SlotName: 'staging'
-        packageForLinux: '$(Pipeline.Workspace)/**/*.zip'    
+        packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
     - task: AzureAppServiceManage@0
       inputs:
         azureSubscription: 'DSS'
