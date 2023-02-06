@@ -52,7 +52,7 @@ stages:
             azureSubscription: 'DSS'
             appType: 'webApp'
             WebAppName: 'hwa-dev'
-            packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
+            packageForLinux: '$(Pipeline.Workspace)/**/*.zip'
 
 - stage: "DeployToQa"
   jobs:
@@ -70,7 +70,7 @@ stages:
             azureSubscription: 'DSS'
             appType: 'webApp'
             WebAppName: 'hw-qa'
-            packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
+            packageForLinux: '$(Pipeline.Workspace)/**/*.zip'
 
 - stage: "DeployToProd"
   dependsOn: "BuildStage"
@@ -93,7 +93,7 @@ stages:
             deployToSlotOrASE: true
             ResourceGroupName: 'helloworldapp'
             SlotName: 'staging'
-            packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
+            packageForLinux: '$(Pipeline.Workspace)/**/*.zip'
         - task: AzureAppServiceManage@0
           inputs:
             azureSubscription: 'DSS'
