@@ -27,6 +27,8 @@ stages:
       inputs:
         command: 'test'
         projects: '**/*[Tt]ests/*.csproj'
+        arguments: '--no-build --configuration $(buildConfiguration)'
+        publishTestResults: true
     - task: DotNetCoreCLI@2
       displayName: "publish"
       inputs:
