@@ -1,5 +1,5 @@
 trigger:
-- dev
+- feature1
 
 pool:
  vmImage: ubuntu-latest
@@ -34,72 +34,72 @@ stages:
         artifact: 'drop'
         publishLocation: 'pipeline'
 
-- stage: "DeployToDev"
-  dependsOn: "BuildStage"
-  condition: eq(variables['Build.SourceBranch'], 'refs/heads/dev')
-  jobs:
-  - deployment: 
-    pool:
-      vmImage: ubuntu-latest
-    environment: "Development"
-    strategy:
-     runOnce:
-       deploy:
-        steps:
-        - task: AzureRmWebAppDeployment@4
-          inputs:
-            ConnectionType: 'AzureRM'
-            azureSubscription: 'DSS'
-            appType: 'webApp'
-            WebAppName: 'hwa-dev'
-            packageForLinux: '$(Pipeline.Workspace)/**/*.zip'
+# - stage: "DeployToDev"
+#   dependsOn: "BuildStage"
+#   condition: eq(variables['Build.SourceBranch'], 'refs/heads/dev')
+#   jobs:
+#   - deployment: 
+#     pool:
+#       vmImage: ubuntu-latest
+#     environment: "Development"
+#     strategy:
+#      runOnce:
+#        deploy:
+#         steps:
+#         - task: AzureRmWebAppDeployment@4
+#           inputs:
+#             ConnectionType: 'AzureRM'
+#             azureSubscription: 'DSS'
+#             appType: 'webApp'
+#             WebAppName: 'hwa-dev'
+#             packageForLinux: '$(Pipeline.Workspace)/**/*.zip'
 
-- stage: "DeployToQa"
-  jobs:
-  - deployment: 
-    pool:
-      vmImage: ubuntu-latest
-    environment: "QA"
-    strategy:
-     runOnce:
-       deploy:
-        steps:
-        - task: AzureRmWebAppDeployment@4
-          inputs:
-            ConnectionType: 'AzureRM'
-            azureSubscription: 'DSS'
-            appType: 'webApp'
-            WebAppName: 'hw-qa'
-            packageForLinux: '$(Pipeline.Workspace)/**/*.zip'
+# - stage: "DeployToQa"
+#   jobs:
+#   - deployment: 
+#     pool:
+#       vmImage: ubuntu-latest
+#     environment: "QA"
+#     strategy:
+#      runOnce:
+#        deploy:
+#         steps:
+#         - task: AzureRmWebAppDeployment@4
+#           inputs:
+#             ConnectionType: 'AzureRM'
+#             azureSubscription: 'DSS'
+#             appType: 'webApp'
+#             WebAppName: 'hw-qa'
+#             packageForLinux: '$(Pipeline.Workspace)/**/*.zip'
 
-- stage: "DeployToProd"
-  dependsOn: "BuildStage"
-  condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
-  jobs:
-  - deployment: 
-    pool:
-      vmImage: ubuntu-latest
-    environment: "Production"
-    strategy:
-     runOnce:
-       deploy:
-        steps:
-        - task: AzureRmWebAppDeployment@4
-          inputs:
-            ConnectionType: 'AzureRM'
-            azureSubscription: 'DSS'
-            appType: 'webApp'
-            WebAppName: 'hellow-prod'
-            deployToSlotOrASE: true
-            ResourceGroupName: 'helloworldapp'
-            SlotName: 'staging'
-            packageForLinux: '$(Pipeline.Workspace)/**/*.zip'
-        - task: AzureAppServiceManage@0
-          inputs:
-            azureSubscription: 'DSS'
-            Action: 'Swap Slots'
-            WebAppName: 'hellow-prod'
-            ResourceGroupName: 'helloworldapp'
-            SourceSlot: 'staging'
+# - stage: "DeployToProd"
+#   dependsOn: "BuildStage"
+#   condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
+#   jobs:
+#   - deployment: 
+#     pool:
+#       vmImage: ubuntu-latest
+#     environment: "Production"
+#     strategy:
+#      runOnce:
+#        deploy:
+#         steps:
+#         - task: AzureRmWebAppDeployment@4
+#           inputs:
+#             ConnectionType: 'AzureRM'
+#             azureSubscription: 'DSS'
+#             appType: 'webApp'
+#             WebAppName: 'hellow-prod'
+#             deployToSlotOrASE: true
+#             ResourceGroupName: 'helloworldapp'
+#             SlotName: 'staging'
+#             packageForLinux: '$(Pipeline.Workspace)/**/*.zip'
+#         - task: AzureAppServiceManage@0
+#           inputs:
+#             azureSubscription: 'DSS'
+#             Action: 'Swap Slots'
+#             WebAppName: 'hellow-prod'
+#             ResourceGroupName: 'helloworldapp'
+#             SourceSlot: 'staging'
   
        
