@@ -55,7 +55,14 @@ Results/Coverage/'
      runOnce:
        deploy:
         steps:
-        
+        - task: AzureRmWebAppDeployment@4
+          inputs:
+            ConnectionType: 'AzureRM'
+            azureSubscription: 'DSS7'
+            appType: 'webApp'
+            WebAppName: 'hwap-dev'
+            packageForLinux: '$(Pipeline.Workspace)/**/*.zip'
+
         
 
 - stage: "DeployToQa"
@@ -74,7 +81,7 @@ Results/Coverage/'
             ConnectionType: 'AzureRM'
             azureSubscription: 'DSS7'
             appType: 'webApp'
-            WebAppName: 'hwaa-qa'
+            WebAppName: 'hwap-qa'
             packageForLinux: '$(Pipeline.Workspace)/**/*.zip'
 
 - stage: "DeployToProd"
@@ -94,7 +101,7 @@ Results/Coverage/'
             ConnectionType: 'AzureRM'
             azureSubscription: 'DSS7'
             appType: 'webApp'
-            WebAppName: 'hwaa-prod'
+            WebAppName: 'hwap-prod'
             deployToSlotOrASE: true
             ResourceGroupName: 'helloworldapp'
             SlotName: 'staging'
