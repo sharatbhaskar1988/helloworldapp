@@ -57,12 +57,13 @@ stages:
         - task: AzureRmWebAppDeployment@4
           inputs:
             ConnectionType: 'AzureRM'
-            azureSubscription: 'DSS'
+            azureSubscription: 'DSS7'
             appType: 'webApp'
-            WebAppName: 'hwa-dev'
+            WebAppName: 'hwaa-dev'
             packageForLinux: '$(Pipeline.Workspace)/**/*.zip'
 
 - stage: "DeployToQa"
+  dependsOn: "DeployToDev"
   jobs:
   - deployment: 
     pool:
@@ -75,9 +76,9 @@ stages:
         - task: AzureRmWebAppDeployment@4
           inputs:
             ConnectionType: 'AzureRM'
-            azureSubscription: 'DSS'
+            azureSubscription: 'DSS7'
             appType: 'webApp'
-            WebAppName: 'hw-qa'
+            WebAppName: 'hwaa-qa'
             packageForLinux: '$(Pipeline.Workspace)/**/*.zip'
 
 - stage: "DeployToProd"
@@ -95,18 +96,18 @@ stages:
         - task: AzureRmWebAppDeployment@4
           inputs:
             ConnectionType: 'AzureRM'
-            azureSubscription: 'DSS'
+            azureSubscription: 'DSS7'
             appType: 'webApp'
-            WebAppName: 'hellow-prod'
+            WebAppName: 'hwaa-prod'
             deployToSlotOrASE: true
             ResourceGroupName: 'helloworldapp'
             SlotName: 'staging'
             packageForLinux: '$(Pipeline.Workspace)/**/*.zip'
         - task: AzureAppServiceManage@0
           inputs:
-            azureSubscription: 'DSS'
+            azureSubscription: 'DSS7'
             Action: 'Swap Slots'
-            WebAppName: 'hellow-prod'
+            WebAppName: 'hwaa-prod'
             ResourceGroupName: 'helloworldapp'
             SourceSlot: 'staging'
   
