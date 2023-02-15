@@ -21,13 +21,15 @@ stages:
         command: 'build'
         projects: '**/*.csproj'
         arguments: '--configuration $(buildConfiguration)'
-    # - task: DotNetCoreCLI@2
-    #   displayName: "test"
-    #   inputs:
-    #     command: 'test'
-    #     projects: '**/*Tests.csproj'
-    #     arguments: '--no-build --configuration $(buildConfiguration)'
-    #     publishTestResults: true
+    - task: DotNetCoreCLI@2
+      displayName: 'Run unit tests - $(buildConfiguration)'
+      inputs:
+        command: 'test'
+        projects: '**/*Test.csproj'
+        arguments: '--no-build --configuration $(buildConfiguration) /p:threshold=80 /p:thresholdType=line
+/p:thresholdStat=total /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=./Test
+Results/Coverage/'
+        publishTestResults: true
     - task: DotNetCoreCLI@2
       displayName: "publish"
       inputs:
@@ -53,13 +55,14 @@ stages:
      runOnce:
        deploy:
         steps:
-        - task: AzureRmWebAppDeployment@4
-          inputs:
-            ConnectionType: 'AzureRM'
-            azureSubscription: 'DSS7'
-            appType: 'webApp'
-            WebAppName: 'hwaa-dev'
-            packageForLinux: '$(Pipeline.Workspace)/**/*.zip'
+         
+        # - task: AzureRmWebAppDeployment@4
+        #   inputs:
+        #     ConnectionType: 'AzureRM'
+        #     azureSubscription: 'DSS7'
+        #     appType: 'webApp'
+        #     WebAppName: 'hwaa-dev'
+        #     packageForLinux: '$(Pipeline.Workspace)/**/*.zip'
 
 - stage: "DeployToQa"
   dependsOn: "DeployToDev"
