@@ -30,12 +30,11 @@ stages:
 /p:thresholdStat=total /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=./Test
 Results/Coverage/'
         publishTestResults: true
-    - task: DotNetCoreCLI@2
-      displayName: "publish"
+    - task: PublishCodeCoverageResults@2
       inputs:
-        command: 'publish'
-        publishWebProjects: true
-        arguments: '--configuration $(buildConfiguration) --output $(build.ArtifactStagingDirectory)'
+       summaryFileLocation: '$(Pipeline.Workspace)/**/coverage.cobertura.xml'
+      condition: 'succeededOrFailed()'
+
 
     - task: PublishPipelineArtifact@1
       inputs:
