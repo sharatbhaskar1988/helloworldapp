@@ -1,8 +1,5 @@
 trigger:
-- master
-- dev
-- feature
-- f2
+- '*'
 
 pool:
  vmImage: ubuntu-latest
