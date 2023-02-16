@@ -54,7 +54,7 @@ public void AddTest()
         return; 
     }
 driver.Manage().Window.Maximize();
-driver.Url = Environment.GetEnvironmentVariable("http://localhost:5287"); 
+driver.Url = Environment.GetEnvironmentVariable("SET_URL"); 
 IWebElement n1 = driver.FindElement(By.Name("N1")); 
 IWebElement n2 = driver.FindElement(By.Name("N2")); 
 n1.Clear();
