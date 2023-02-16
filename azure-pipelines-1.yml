@@ -1,5 +1,5 @@
 trigger:
-- '*'
+- none
 
 pool:
  vmImage: windows-latest
@@ -70,7 +70,7 @@ stages:
   jobs:
   - deployment: 
     pool:
-      vmImage: ubuntu-latest
+      vmImage: windows-latest
     environment: "Development"
     strategy:
      runOnce:
@@ -83,6 +83,10 @@ stages:
             appType: 'webApp'
             WebAppName: 'hwap-dev'
             packageForLinux: '$(Pipeline.Workspace)/**/*.zip'
+        - task: DotNetCoreCLI@2
+          inputs:
+            command: 'test'
+            arguments: 'HelloWorldApp.UITests\bin\Release\net7.0\HelloWorldApp.UITests.dll'
 
 - stage: "DeployToQa"
   dependsOn: "DeployToDev"
