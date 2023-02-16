@@ -19,7 +19,7 @@ stages:
       displayName: "build"
       inputs:
         command: 'build'
-        projects: '**/HelloWorldApp.Web.csproj'
+        projects: '**/*.csproj'
         arguments: '-c $(BuildConfiguration)'
     
     - task: DotNetCoreCLI@2
