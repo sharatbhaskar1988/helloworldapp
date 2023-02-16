@@ -29,6 +29,12 @@ stages:
         projects: '**/HelloWorldApp.UITests.csproj'
         arguments: '-c $(BuildConfiguration) -o $(Pipeline.Workspace)'
         zipAfterPublish: false
+    
+    - task: CopyFiles@2
+      inputs:
+        SourceFolder: '.\HelloWorldApp.UITests\bin\$(BuildConfiguration)\net7.0\'
+        Contents: '*driver.exe'
+        TargetFolder: '$(Pipeline.Workspace)\HelloWorldApp.UITests'
       
 #     - task: DotNetCoreCLI@2
 #       displayName: 'Run unit tests - $(BuildConfiguration)'
