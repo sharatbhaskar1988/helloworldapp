@@ -27,7 +27,7 @@ stages:
         command: 'publish'
         publishWebProjects: false
         projects: '**/HelloWorldApp.UITests.csproj'
-        arguments: '-c $(BuildConfiguration) -o $(Build.ArtifactStagingDirectory)'
+        arguments: '-c $(BuildConfiguration) -o $(Pipeline.Workspace)'
         zipAfterPublish: false
       
 #     - task: DotNetCoreCLI@2
@@ -50,7 +50,7 @@ stages:
         command: 'publish'
         projects: '**/*Web.csproj'
         publishWebProjects: true
-        arguments: '-c $(BuildConfiguration) -o $(Build.ArtifactStagingDirectory)'
+        arguments: '-c $(BuildConfiguration) -o $(Pipeline.Workspace)'
     - task: PublishPipelineArtifact@1
       displayName: 'Publishing pipeline artifacts'
       inputs:
