@@ -20,22 +20,22 @@ stages:
       inputs:
         command: 'build'
         projects: '**/*.csproj'
-        arguments: '-c $(buildConfiguration)'
+        arguments: '-c $(BuildConfiguration)'
     
     - task: DotNetCoreCLI@2
       inputs:
         command: 'publish'
         publishWebProjects: false
         projects: '**/*UITests.csproj'
-        arguments: '-c $(buildConfiguration) -o $(Build.ArtifactStagingDirectory)'
+        arguments: '-c $(BuildConfiguration) -o $(Build.ArtifactStagingDirectory)'
         zipAfterPublish: false
       
     - task: DotNetCoreCLI@2
-      displayName: 'Run unit tests - $(buildConfiguration)'
+      displayName: 'Run unit tests - $(BuildConfiguration)'
       inputs:
         command: 'test'
         projects: '**/HelloWorldApp.Tests.csproj'
-        arguments: '--no-build --configuration $(buildConfiguration) /p:threshold=80 /p:thresholdType=line
+        arguments: '--no-build --configuration $(BuildConfiguration) /p:threshold=80 /p:thresholdType=line
 /p:thresholdStat=total /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=./Test
 Results/Coverage/'
         publishTestResults: true
@@ -49,7 +49,7 @@ Results/Coverage/'
         command: 'publish'
         projects: '**/*Web.csproj'
         publishWebProjects: true
-        arguments: '-c $(buildConfiguration) -o $(Build.ArtifactStagingDirectory)'
+        arguments: '-c $(BuildConfiguration) -o $(Build.ArtifactStagingDirectory)'
     - task: PublishPipelineArtifact@1
       inputs:
         targetPath: '$(Pipeline.Workspace)'
