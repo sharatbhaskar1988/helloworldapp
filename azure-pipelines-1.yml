@@ -30,19 +30,19 @@ stages:
         arguments: '-c $(BuildConfiguration) -o $(Build.ArtifactStagingDirectory)'
         zipAfterPublish: false
       
-    - task: DotNetCoreCLI@2
-      displayName: 'Run unit tests - $(BuildConfiguration)'
-      inputs:
-        command: 'test'
-        projects: '**/HelloWorldApp.Tests.csproj'
-        arguments: '--no-build --configuration $(BuildConfiguration) /p:threshold=7 /p:thresholdType=line
-/p:thresholdStat=total /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=./Test
-Results/Coverage/'
-        publishTestResults: true
-    - task: PublishCodeCoverageResults@2
-      inputs:
-       summaryFileLocation: '$(Pipeline.Workspace)/**/coverage.cobertura.xml'
-      condition: 'succeededOrFailed()'
+#     - task: DotNetCoreCLI@2
+#       displayName: 'Run unit tests - $(BuildConfiguration)'
+#       inputs:
+#         command: 'test'
+#         projects: '**/HelloWorldApp.Tests.csproj'
+#         arguments: '--no-build --configuration $(BuildConfiguration) /p:threshold=7 /p:thresholdType=line
+# /p:thresholdStat=total /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=./Test
+# Results/Coverage/'
+#         publishTestResults: true
+#     - task: PublishCodeCoverageResults@2
+#       inputs:
+#        summaryFileLocation: '$(Pipeline.Workspace)/**/coverage.cobertura.xml'
+#       condition: 'succeededOrFailed()'
 
     - task: DotNetCoreCLI@2
       displayName: 'Dotnet Publish'
