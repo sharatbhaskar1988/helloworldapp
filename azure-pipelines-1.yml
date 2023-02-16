@@ -45,12 +45,14 @@ Results/Coverage/'
       condition: 'succeededOrFailed()'
 
     - task: DotNetCoreCLI@2
+      displayName: 'Dotnet Publish'
       inputs:
         command: 'publish'
         projects: '**/*Web.csproj'
         publishWebProjects: true
         arguments: '-c $(BuildConfiguration) -o $(Build.ArtifactStagingDirectory)'
     - task: PublishPipelineArtifact@1
+      displayName: 'Publishing pipeline artifacts'
       inputs:
         targetPath: '$(Pipeline.Workspace)'
         artifact: 'drop'
