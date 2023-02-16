@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelloWorldApp.Web", "HelloW
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelloWorldApp.Tests", "HelloWorldApp.Tests\HelloWorldApp.Tests.csproj", "{C47BE864-B87E-4BE2-8EA3-0041C3BEC713}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelloWorldApp.UITests", "HelloWorldApp.UITests\HelloWorldApp.UITests.csproj", "{0FE2F63C-4C29-44A3-9C9F-2D34214E3F57}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{C47BE864-B87E-4BE2-8EA3-0041C3BEC713}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C47BE864-B87E-4BE2-8EA3-0041C3BEC713}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C47BE864-B87E-4BE2-8EA3-0041C3BEC713}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0FE2F63C-4C29-44A3-9C9F-2D34214E3F57}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0FE2F63C-4C29-44A3-9C9F-2D34214E3F57}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0FE2F63C-4C29-44A3-9C9F-2D34214E3F57}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0FE2F63C-4C29-44A3-9C9F-2D34214E3F57}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

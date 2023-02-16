@@ -1,8 +1,13 @@
-﻿@{
+﻿@model MyMath
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome To branches sharat you made it...this is new feature branch. ok. great.</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div>
+    <form method="post">
+N1: <input type="text" id="n1" asp-for="N1" /><br />
+N2: <input type="text" id="n2" asp-for="N2" /><br />
+Result: <input type="text" id="result" asp-for="Result"/><br /> <input type="submit" name="submit" value="Add" /><br />
+    </form> 
 </div>

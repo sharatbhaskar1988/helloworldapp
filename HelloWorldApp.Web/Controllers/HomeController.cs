@@ -13,9 +13,17 @@ public class HomeController : Controller
         _logger = logger;
     }
 
-    public IActionResult Index()
+    public IActionResult Index() 
     {
-        return View();
+        MyMath m = new MyMath() { N1 = 10, N2 = 5, Result = 15 };
+        return View(m); 
+    }
+        [HttpPost]
+        public IActionResult Index(MyMath m) 
+    {
+        ModelState.Clear(); 
+        m.Result = m.N1 + m.N2; 
+        return View(m);
     }
 
     public IActionResult Privacy()
