@@ -35,8 +35,8 @@ stages:
       - task: CopyFiles@2
         displayName: 'Copying UI Files'
         inputs:
-          SourceFolder: '$(Pipeline.Workspace)'
-          Contents: '**/HelloWorldApp.UITests\bin\Release\net7.0\'
+          SourceFolder: '**/HelloWorldApp.UITests\bin\Release\net7.0\'
+          Contents: '*driver.exe'
           TargetFolder: '$(Pipeline.Workspace)\HelloWorldApp.UITests'
       
       # - task: DotNetCoreCLI@2
