@@ -64,3 +64,9 @@ stages:
           targetPath: '$(Pipeline.Workspace)'
           artifact: 'drop'
           publishLocation: 'pipeline'
+
+- stage: "DEV"
+  dependsOn: "BuildStage"
+  jobs:
+    - deployment:
+      environment: Dev
