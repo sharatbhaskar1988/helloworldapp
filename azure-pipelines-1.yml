@@ -22,7 +22,18 @@ stages:
           command: 'build'
           projects: '**/HelloWorldApp.Web.csproj'
           arguments: '-c $(BuildConfiguration)'
-
+      
+      - task: DotNetCoreCLI@2
+        displayName: 'Unit Tests - $(BuildConfiguration)'
+        inputs:
+          command: 'test'
+          projects: '**/HelloWorldApp.Tests.csproj'
+          arguments: '--no-build -c $(BuildConfiguration) /p:threshold=7 /p:thresholdType=linear /p:thresholdStat=total /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=./TestResults/Coverage/'
+      
+      - task: PublishCodeCoverageResults@2
+        inputs:
+          summaryFileLocation: '$(Pipeline.Workspace)/**/coverage.cobertura.xml'
+        condition: 'succeededOrFailed()'
       
       - task: DotNetCoreCLI@2
         displayName: "DotnetPublish"
