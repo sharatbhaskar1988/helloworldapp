@@ -70,3 +70,22 @@ stages:
   jobs:
     - deployment:
       environment: Dev
+      strategy:
+       runOnce:
+        deploy:
+         steps:
+         - task: AzureRmWebAppDeployment@4
+           inputs:
+             ConnectionType: 'AzureRM'
+             azureSubscription: 'DSS7'
+             appType: 'webApp'
+             WebAppName: 'hellowa-dev'
+             packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'            
+         - task: DotNetCoreCLI@2
+           inputs:
+             command: 'test'
+             projects: 'HelloWorldApp.UITests\bin\Release\net7.0\HelloWorldApp.UITests.dll'
+
+          
+         
+      
