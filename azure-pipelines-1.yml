@@ -24,16 +24,30 @@ stages:
           arguments: '-c $(BuildConfiguration)'
       
       - task: DotNetCoreCLI@2
-        displayName: 'Unit Tests - $(BuildConfiguration)'
         inputs:
-          command: 'test'
-          projects: '**/HelloWorldApp.Tests.csproj'
-          arguments: '--no-build -c $(BuildConfiguration) /p:threshold=7 /p:thresholdType=line /p:thresholdStat=total /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=./TestResults/Coverage/'
+          command: 'publish'
+          publishWebProjects: false
+          projects: '**/HelloWorldApp.UITests.csproj'
+          arguments: '-c $(BuildConfiguration) -o $(Pipeline.Workspace)'
+          zipAfterPublish: false
       
-      - task: PublishCodeCoverageResults@2
-        inputs:
-          summaryFileLocation: '$(Pipeline.Workspace)/**/coverage.cobertura.xml'
-        condition: 'succeededOrFailed()'
+      # - task: CopyFiles@2
+      #   inputs:
+      #     SourceFolder: '$(Pipeline.Workspace)'
+      #     Contents: '**/'
+      #     TargetFolder: 
+      
+      # - task: DotNetCoreCLI@2
+      #   displayName: 'Unit Tests - $(BuildConfiguration)'
+      #   inputs:
+      #     command: 'test'
+      #     projects: '**/HelloWorldApp.Tests.csproj'
+      #     arguments: '--no-build -c $(BuildConfiguration) /p:threshold=7 /p:thresholdType=line /p:thresholdStat=total /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=./TestResults/Coverage/'
+      
+      # - task: PublishCodeCoverageResults@2
+      #   inputs:
+      #     summaryFileLocation: '$(Pipeline.Workspace)/**/coverage.cobertura.xml'
+      #   condition: 'succeededOrFailed()'
       
       - task: DotNetCoreCLI@2
         displayName: "DotnetPublish"
