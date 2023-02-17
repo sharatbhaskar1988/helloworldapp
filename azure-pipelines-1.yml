@@ -35,7 +35,7 @@ stages:
       - task: CopyFiles@2
         displayName: 'Copying UI Files'
         inputs:
-          SourceFolder: '**/HelloWorldApp.UITests\bin\Release\net7.0\'
+          SourceFolder: '$(Pipeline.Workspace)/**/HelloWorldApp.UITests\bin\Release\net7.0\'
           Contents: '*driver.exe'
           TargetFolder: '$(Pipeline.Workspace)\HelloWorldApp.UITests'
       
