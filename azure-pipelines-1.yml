@@ -28,7 +28,7 @@ stages:
         inputs:
           command: 'test'
           projects: '**/HelloWorldApp.Tests.csproj'
-          arguments: '--no-build -c $(BuildConfiguration) /p:threshold=7 /p:thresholdType=linear /p:thresholdStat=total /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=./TestResults/Coverage/'
+          arguments: '--no-build -c $(BuildConfiguration) /p:threshold=7 /p:thresholdType=line /p:thresholdStat=total /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=./TestResults/Coverage/'
       
       - task: PublishCodeCoverageResults@2
         inputs:
