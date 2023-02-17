@@ -24,6 +24,7 @@ stages:
           arguments: '-c $(BuildConfiguration)'
       
       - task: DotNetCoreCLI@2
+        displayName: 'UI Tests Publish'
         inputs:
           command: 'publish'
           publishWebProjects: false
@@ -31,11 +32,12 @@ stages:
           arguments: '-c $(BuildConfiguration) -o $(Pipeline.Workspace)'
           zipAfterPublish: false
       
-      # - task: CopyFiles@2
-      #   inputs:
-      #     SourceFolder: '$(Pipeline.Workspace)'
-      #     Contents: '**/'
-      #     TargetFolder: 
+      - task: CopyFiles@2
+        displayName: 'Copying UI Files'
+        inputs:
+          SourceFolder: '$(Pipeline.Workspace)'
+          Contents: '**/HelloWorldApp.UITests\bin\Release\net7.0\'
+          TargetFolder: '$(Pipeline.Workspace)\HelloWorldApp.UITests'
       
       # - task: DotNetCoreCLI@2
       #   displayName: 'Unit Tests - $(BuildConfiguration)'
