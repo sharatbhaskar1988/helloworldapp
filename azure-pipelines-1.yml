@@ -80,7 +80,7 @@ stages:
              azureSubscription: 'DSS7'
              appType: 'webApp'
              WebAppName: 'hellowa-dev'
-             packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'            
+             packageForLinux: '$(Pipeline.Workspace)/**/*.zip'            
          - task: DotNetCoreCLI@2
            inputs:
              command: 'test'
