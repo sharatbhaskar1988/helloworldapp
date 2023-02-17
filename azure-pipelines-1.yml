@@ -9,132 +9,31 @@ stages:
   jobs:
   - job: "BuildJob"
     steps:
-    - task: DotNetCoreCLI@2
-      displayName: "restore"
-      inputs:
+      - task: DotNetCoreCLI@2
+        displayName: "DotnetRestore"
+        inputs:
           command: 'restore'
           projects: '**/HelloWorldApp.Web.csproj'
           feedsToUse: 'select'
-    - task: DotNetCoreCLI@2
-      displayName: "build"
-      inputs:
-        command: 'build'
-        projects: '**/HelloWorldApp.Web.csproj'
-        arguments: '-c $(BuildConfiguration)'
-    
-    - task: DotNetCoreCLI@2
-      inputs:
-        command: 'publish'
-        publishWebProjects: false
-        projects: '**/HelloWorldApp.UITests.csproj'
-        arguments: '-c $(BuildConfiguration) -o $(Pipeline.Workspace)'
-        zipAfterPublish: false
-    
-    - task: CopyFiles@2
-      inputs:
-        SourceFolder: '.\HelloWorldApp.UITests\bin\$(BuildConfiguration)\net7.0\'
-        Contents: '*driver.exe'
-        TargetFolder: '$(Pipeline.Workspace)\HelloWorldApp.UITests'
       
-#     - task: DotNetCoreCLI@2
-#       displayName: 'Run unit tests - $(BuildConfiguration)'
-#       inputs:
-#         command: 'test'
-#         projects: '**/HelloWorldApp.Tests.csproj'
-#         arguments: '--no-build --configuration $(BuildConfiguration) /p:threshold=7 /p:thresholdType=line
-# /p:thresholdStat=total /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=./Test
-# Results/Coverage/'
-#         publishTestResults: true
-#     - task: PublishCodeCoverageResults@2
-#       inputs:
-#        summaryFileLocation: '$(Pipeline.Workspace)/**/coverage.cobertura.xml'
-#       condition: 'succeededOrFailed()'
+      - task: DotNetCoreCLI@2
+        displayName: "DotnetBuild"
+        inputs:
+          command: 'build'
+          projects: '**/HelloWorldApp.Web.csproj'
+          arguments: '-c $(BuildConfiguration)'
 
-    - task: DotNetCoreCLI@2
-      displayName: 'Dotnet Publish'
-      inputs:
-        command: 'publish'
-        projects: '**/*Web.csproj'
-        publishWebProjects: true
-        arguments: '-c $(BuildConfiguration) -o $(Pipeline.Workspace)'
-    - task: PublishPipelineArtifact@1
-      displayName: 'Publishing pipeline artifacts'
-      inputs:
-        targetPath: '$(Pipeline.Workspace)'
-        artifact: 'drop'
-        publishLocation: 'pipeline'
-
-- stage: "DeployToDev"
-  dependsOn: "BuildStage"
-  #condition: eq(variables['Build.SourceBranch'], 'refs/heads/dev')
-  jobs:
-  - deployment: 
-    pool:
-      vmImage: windows-latest
-    environment: "Development"
-    strategy:
-     runOnce:
-       deploy:
-        steps:
-        - task: AzureRmWebAppDeployment@4
-          inputs:
-            ConnectionType: 'AzureRM'
-            azureSubscription: 'DSS7'
-            appType: 'webApp'
-            WebAppName: 'hwap-dev'
-            packageForLinux: '$(Pipeline.Workspace)/**/*.zip'
-        - task: DotNetCoreCLI@2
-          inputs:
-            command: 'test'
-            arguments: 'HelloWorldApp.UITests\bin\Release\net7.0\HelloWorldApp.UITests.dll'
-
-- stage: "DeployToQa"
-  dependsOn: "DeployToDev"
-  jobs:
-  - deployment: 
-    pool:
-      vmImage: ubuntu-latest
-    environment: "QA"
-    strategy:
-     runOnce:
-       deploy:
-        steps:
-        - task: AzureRmWebAppDeployment@4
-          inputs:
-            ConnectionType: 'AzureRM'
-            azureSubscription: 'DSS7'
-            appType: 'webApp'
-            WebAppName: 'hwap-qa'
-            packageForLinux: '$(Pipeline.Workspace)/**/*.zip'
-
-- stage: "DeployToProd"
-  dependsOn: "BuildStage"
-  condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
-  jobs:
-  - deployment: 
-    pool:
-      vmImage: ubuntu-latest
-    environment: "Production"
-    strategy:
-     runOnce:
-       deploy:
-        steps:
-        - task: AzureRmWebAppDeployment@4
-          inputs:
-            ConnectionType: 'AzureRM'
-            azureSubscription: 'DSS7'
-            appType: 'webApp'
-            WebAppName: 'hwap-prod'
-            deployToSlotOrASE: true
-            ResourceGroupName: 'helloworldapp'
-            SlotName: 'staging'
-            packageForLinux: '$(Pipeline.Workspace)/**/*.zip'
-        - task: AzureAppServiceManage@0
-          inputs:
-            azureSubscription: 'DSS7'
-            Action: 'Swap Slots'
-            WebAppName: 'hwaa-prod'
-            ResourceGroupName: 'helloworldapp'
-            SourceSlot: 'staging'
-  
-       
+      
+      - task: DotNetCoreCLI@2
+        displayName: "DotnetPublish"
+        inputs:
+          command: 'publish'
+          publishWebProjects: true
+          arguments: '-c $(BuildConfiguration) -o $(Pipeline.Workspace)'
+      
+      - task: PublishPipelineArtifact@1
+        displayName: "Publishing Pipeline Artifacts"
+        inputs:
+          targetPath: '$(Pipeline.Workspace)'
+          artifact: 'drop'
+          publishLocation: 'pipeline'
