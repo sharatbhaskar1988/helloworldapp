@@ -19,9 +19,15 @@ stages:
       - task: SonarCloudPrepare@1
         inputs:
           SonarCloud: 'sonarcloudconnection'
-          organization: '11012023-bdt21'
+          organization: '$(SonarOrganization)'
           scannerMode: 'MSBuild'
-          projectKey: 'ninakey'
+          projectKey: '$(SonarProjectKey)'
+          projectName: '$(SonarProjectName)'
+          projectVersion: '$(Build.BuildNumber)'
+          extraProperties: |
+                     sonar.exclusions=**/obj/**,**/*.dll 
+                     sonar.cs.opencover.reportsPaths=$(Build.SourcesDirectory)/**/coverage.opencover.xml 
+                     sonar.cs.vstest.reportsPaths=$(Agent.TempDirectory)/*.trx
       
       - task: DotNetCoreCLI@2
         displayName: "DotnetBuild"
@@ -58,6 +64,11 @@ stages:
       #     summaryFileLocation: '$(Pipeline.Workspace)/**/coverage.cobertura.xml'
       #   condition: 'succeededOrFailed()'
       
+      - task: SonarCloudAnalyze@1
+        displayName: 'Run SonarCloud code analysis'
+      - task: SonarCloudPublish@1
+        displayName: 'Publish SonarCloud quality gate results'
+
       - task: DotNetCoreCLI@2
         displayName: "DotnetPublish"
         inputs:
