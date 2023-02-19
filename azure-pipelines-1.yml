@@ -21,7 +21,7 @@ stages:
           SonarCloud: 'sonarcloudconnection'
           organization: '11012023-bdt21'
           scannerMode: 'MSBuild'
-          projectKey: '11012023-Bdt21_HelloWorldAPP'
+          projectKey: 'ninakey'
       
       - task: DotNetCoreCLI@2
         displayName: "DotnetBuild"
