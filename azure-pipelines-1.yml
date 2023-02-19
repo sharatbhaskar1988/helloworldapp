@@ -16,6 +16,13 @@ stages:
           projects: '**/HelloWorldApp.Web.csproj'
           feedsToUse: 'select'
       
+      - task: SonarCloudPrepare@1
+        inputs:
+          SonarCloud: 'sonarcloudconnection'
+          organization: '11012023-bdt21'
+          scannerMode: 'MSBuild'
+          projectKey: '11012023-Bdt21_HelloWorldAPP'
+      
       - task: DotNetCoreCLI@2
         displayName: "DotnetBuild"
         inputs:
@@ -65,75 +72,75 @@ stages:
           artifact: 'drop'
           publishLocation: 'pipeline'
 
-- stage: "DEV"
-  dependsOn: "BuildStage"
-  jobs:
-    - deployment:
-      environment: Dev
-      strategy:
-       runOnce:
-        deploy:
-         steps:
-         - task: AzureRmWebAppDeployment@4
-           inputs:
-             ConnectionType: 'AzureRM'
-             azureSubscription: 'DSS7'
-             appType: 'webApp'
-             WebAppName: 'hellowapp-dev'
-             packageForLinux: '$(Pipeline.Workspace)/**/*.zip'
-         - task: DotNetCoreCLI@2
-           inputs:
-             command: 'test'
-             projects: 'HelloWorldApp.UITests\bin\Release\net7.0\HelloWorldApp.UITests.dll'
+# - stage: "DEV"
+#   dependsOn: "BuildStage"
+#   jobs:
+#     - deployment:
+#       environment: Dev
+#       strategy:
+#        runOnce:
+#         deploy:
+#          steps:
+#          - task: AzureRmWebAppDeployment@4
+#            inputs:
+#              ConnectionType: 'AzureRM'
+#              azureSubscription: 'DSS7'
+#              appType: 'webApp'
+#              WebAppName: 'hellowapp-dev'
+#              packageForLinux: '$(Pipeline.Workspace)/**/*.zip'
+#          - task: DotNetCoreCLI@2
+#            inputs:
+#              command: 'test'
+#              projects: 'HelloWorldApp.UITests\bin\Release\net7.0\HelloWorldApp.UITests.dll'
 
-- stage: "QA"
-  dependsOn: "DEV"
-  jobs:
-    - deployment:
-      environment: "QA"
-      strategy:
-       runOnce:
-        deploy:
-         steps:
-         - task: AzureRmWebAppDeployment@4
-           inputs:
-             ConnectionType: 'AzureRM'
-             azureSubscription: 'DSS7'
-             appType: 'webApp'
-             WebAppName: 'hellowapp-qa'
-             packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'          
-         - task: DotNetCoreCLI@2
-           inputs:
-            command: 'test'
-            projects: 'HelloWorldApp.UITests\bin\Release\net7.0\HelloWorldApp.UITests.dll'
+# - stage: "QA"
+#   dependsOn: "DEV"
+#   jobs:
+#     - deployment:
+#       environment: "QA"
+#       strategy:
+#        runOnce:
+#         deploy:
+#          steps:
+#          - task: AzureRmWebAppDeployment@4
+#            inputs:
+#              ConnectionType: 'AzureRM'
+#              azureSubscription: 'DSS7'
+#              appType: 'webApp'
+#              WebAppName: 'hellowapp-qa'
+#              packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'          
+#          - task: DotNetCoreCLI@2
+#            inputs:
+#             command: 'test'
+#             projects: 'HelloWorldApp.UITests\bin\Release\net7.0\HelloWorldApp.UITests.dll'
           
         
-- stage: "Prod"
-  dependsOn: "BuildStage"
-  jobs:
-    - deployment: 
-      environment: "Prod"
-      strategy:
-       runOnce:
-        deploy:
-         steps:
-         - task: AzureRmWebAppDeployment@4
-           inputs:
-             ConnectionType: 'AzureRM'
-             azureSubscription: 'DSS7'
-             appType: 'webApp'
-             WebAppName: 'hellowapp-prod'
-             deployToSlotOrASE: true
-             ResourceGroupName: 'helloworldapp'
-             SlotName: 'staging'
-             packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
-         - task: AzureAppServiceManage@0
-           inputs:
-             azureSubscription: 'DSS7'
-             Action: 'Swap Slots'
-             WebAppName: 'hellowapp-prod'
-             ResourceGroupName: 'helloworldapp'
-             SourceSlot: 'staging'
+# - stage: "Prod"
+#   dependsOn: "BuildStage"
+#   jobs:
+#     - deployment: 
+#       environment: "Prod"
+#       strategy:
+#        runOnce:
+#         deploy:
+#          steps:
+#          - task: AzureRmWebAppDeployment@4
+#            inputs:
+#              ConnectionType: 'AzureRM'
+#              azureSubscription: 'DSS7'
+#              appType: 'webApp'
+#              WebAppName: 'hellowapp-prod'
+#              deployToSlotOrASE: true
+#              ResourceGroupName: 'helloworldapp'
+#              SlotName: 'staging'
+#              packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
+#          - task: AzureAppServiceManage@0
+#            inputs:
+#              azureSubscription: 'DSS7'
+#              Action: 'Swap Slots'
+#              WebAppName: 'hellowapp-prod'
+#              ResourceGroupName: 'helloworldapp'
+#              SourceSlot: 'staging'
           
          
          
