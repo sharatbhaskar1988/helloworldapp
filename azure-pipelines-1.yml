@@ -19,15 +19,15 @@ stages:
       - task: SonarCloudPrepare@1
         inputs:
           SonarCloud: 'sonarcloudconnection'
-          organization: '$(SonarOrganization)'
+          organization: '11012023-bdt21'
           scannerMode: 'MSBuild'
           projectKey: '$(SonarProjectKey)'
           projectName: '$(SonarProjectName)'
           projectVersion: '$(Build.BuildNumber)'
           extraProperties: |
-                     sonar.exclusions=**/obj/**,**/*.dll 
-                     sonar.cs.opencover.reportsPaths=$(Build.SourcesDirectory)/**/coverage.opencover.xml 
-                     sonar.cs.vstest.reportsPaths=$(Agent.TempDirectory)/*.trx
+            sonar.exclusions=**/obj/**,**/*.dll 
+            sonar.cs.opencover.reportsPaths=$(Build.SourcesDirectory)/**/coverage.opencover.xml 
+            sonar.cs.vstest.reportsPaths=$(Agent.TempDirectory)/*.trx
       
       - task: DotNetCoreCLI@2
         displayName: "DotnetBuild"
