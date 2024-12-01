@@ -67,7 +67,7 @@ stages:
       - task: SonarCloudAnalyze@1
         displayName: 'Run SonarCloud code analysis'
       - task: SonarCloudPublish@1
-        displayName: 'Publish SonarCloud quality gate results'
+        displayName: 'Publish SonarCloud quality gate result'
 
       - task: DotNetCoreCLI@2
         displayName: "DotnetPublish"
